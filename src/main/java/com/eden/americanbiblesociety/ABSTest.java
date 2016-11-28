@@ -1,6 +1,7 @@
 package com.eden.americanbiblesociety;
 
 import com.caseyjbrooks.eden.Eden;
+import com.caseyjbrooks.eden.bible.Reference;
 import com.google.gson.GsonBuilder;
 
 public class ABSTest {
@@ -10,29 +11,21 @@ public class ABSTest {
 
         GsonBuilder builder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls();
 
-        ABSBibleList obj = new ABSBibleList();
-        obj.download();
-
-//        ABSBible obj = new ABSBible();
-//        obj.setId("eng-NASB");
+//        ABSBibleList obj = new ABSBibleList();
 //        obj.download();
 
+        ABSBible bible = new ABSBible();
+        bible.setId("eng-NASB");
+        bible.download();
 
+        Reference ref = new Reference.Builder()
+                .setBible(bible)
+                .parseReference("Galatians 2:19-21")
+                .create();
 
+        ABSPassage passage = new ABSPassage(ref);
+        passage.download();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        System.out.println(builder.create().toJson(obj));
+        System.out.println(builder.create().toJson(passage));
     }
 }

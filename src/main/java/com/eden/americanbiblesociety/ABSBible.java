@@ -103,8 +103,9 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
     public ABSBible deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         final JsonArray booksJson = json.getAsJsonObject().get("response").getAsJsonObject().get("books").getAsJsonArray();
 
+        //TODO: find and extract 'language' and 'languageEnglish'
+
         for(int i = 0; i < booksJson.size(); i++) {
-            System.out.println("parsing book: " + i);
             JsonObject bookJson = booksJson.get(i).getAsJsonObject();
 
             if(TextUtils.isEmpty(this.abbreviation)) {

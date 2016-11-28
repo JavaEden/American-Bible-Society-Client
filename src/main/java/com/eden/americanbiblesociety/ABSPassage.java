@@ -1,18 +1,19 @@
 package com.eden.americanbiblesociety;
 
 import com.caseyjbrooks.eden.Eden;
+import com.caseyjbrooks.eden.bible.Passage;
 import com.caseyjbrooks.eden.bible.Reference;
-import com.caseyjbrooks.eden.bible.Verse;
 import com.caseyjbrooks.eden.utils.TextUtils;
-import com.google.gson.Gson;
+import com.google.gson.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.lang.reflect.Type;
 import java.util.Base64;
+import java.util.HashMap;
 
-public class ABSPassage extends Verse {
-    String APIKey;
+public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<ABSPassage> {
 
     public ABSPassage(Reference reference) {
         super(reference);
@@ -26,8 +27,8 @@ public class ABSPassage extends Verse {
         }
     }
 
-    public void download() {
-        APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
+    public ABSPassage download() {
+        String APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
@@ -50,11 +51,13 @@ public class ABSPassage extends Verse {
             Response response = client.newCall(request).execute();
             String body = response.body().string();
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().registerTypeAdapter(ABSPassage.class, this).create();
             gson.fromJson(body, ABSPassage.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return this;
     }
 
     @Override
@@ -63,5 +66,40 @@ public class ABSPassage extends Verse {
             return super.getText() + "<br/><i>" + ((ABSBible) reference.getBible()).getCopyright() + "</i>";
         else
             return super.getText();
+    }
+
+    @Override
+    public ABSPassage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        JsonArray versesJSON = json.getAsJsonObject()
+                .get("response").getAsJsonObject()
+                .get("verses").getAsJsonArray();
+
+        //add all verses to a map from which we can pick the individual verses we want
+        HashMap<Integer, ABSVerse> verseMap = new HashMap<>();
+        for(int i = 0; i < versesJSON.size(); i++) {
+            Reference verseReference = new Reference.Builder()
+                    .setBible(reference.getBible())
+                    .setBook(reference.getBook())
+                    .setChapter(reference.getChapter())
+                    .setVerses(i)
+                    .create();
+            ABSVerse verse = new ABSVerse(verseReference);
+
+            String text = versesJSON
+                    .get(i).getAsJsonObject()
+                    .get("text").getAsString();
+
+            verse.setText(text);
+
+            verseMap.put((i+1), verse);
+        }
+
+        this.verses.clear();
+        for(int i = 0; i < reference.getVerses().size(); i++) {
+            ABSVerse verseFromMap = verseMap.get(reference.getVerses().get(i));
+            verses.add(verseFromMap);
+        }
+
+        return this;
     }
 }
