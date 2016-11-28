@@ -9,18 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ABSBook extends Book implements JsonDeserializer<ABSBook> {
-	protected String id;
-
 	public ABSBook() {
 		super();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	@Override

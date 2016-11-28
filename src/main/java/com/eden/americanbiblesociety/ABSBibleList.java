@@ -24,7 +24,7 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
-                    "API key not set in ABT metadata. Please add 'ABS_ApiKey' key to metadata."
+                    "API key not set in Eden metadata. Please add 'ABS_ApiKey' key to metadata."
             );
         }
 
@@ -61,7 +61,7 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
 
         this.bibles = new HashMap<>();
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(ABSBible.class, new ABSBible.ListJsonizer()).create();
+        Gson gson = Eden.getInstance().getDeserializer().registerTypeAdapter(ABSBible.class, new ABSBible.ListJsonizer()).create();
 
         for (int i = 0; i < biblesJson.size(); i++) {
             ABSBible bible = gson.fromJson(biblesJson.get(i), ABSBible.class);

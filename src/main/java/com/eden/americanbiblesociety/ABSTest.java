@@ -9,7 +9,7 @@ public class ABSTest {
     public static void main(String[] args) {
         Eden.getInstance().getMetadata().put("ABS_ApiKey", "mDaM8REZFo6itplNpcv1ls8J5PkwEz1wbhJ7p9po");
 
-        GsonBuilder builder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls();
+        GsonBuilder builder = Eden.getInstance().getSerializer();
 
 //        ABSBibleList obj = new ABSBibleList();
 //        obj.download();
@@ -27,5 +27,8 @@ public class ABSTest {
         passage.download();
 
         System.out.println(builder.create().toJson(passage));
+        System.out.println(passage.getReference().toString());
+        System.out.println(passage.getText());
+        System.out.println(passage.getFormattedText());
     }
 }

@@ -32,7 +32,7 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
-                    "API key not set in ABT metadata. Please add 'ABS_ApiKey' key to metadata."
+                    "API key not set in Eden metadata. Please add 'ABS_ApiKey' key to metadata."
             );
         }
 
@@ -51,7 +51,7 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
             Response response = client.newCall(request).execute();
             String body = response.body().string();
 
-            Gson gson = new GsonBuilder().registerTypeAdapter(ABSPassage.class, this).create();
+            Gson gson = Eden.getInstance().getDeserializer().registerTypeAdapter(ABSPassage.class, this).create();
             gson.fromJson(body, ABSPassage.class);
         } catch (Exception e) {
             e.printStackTrace();
