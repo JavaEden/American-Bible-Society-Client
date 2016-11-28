@@ -3,22 +3,24 @@ package com.eden.americanbiblesociety;
 import com.caseyjbrooks.eden.Eden;
 import com.caseyjbrooks.eden.bible.BibleList;
 import com.caseyjbrooks.eden.utils.TextUtils;
-import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.lang.reflect.Type;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ABSBibleList extends BibleList<ABSBible> {
-	private String APIKey;
+public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserializer<ABSBibleList> {
+    public ABSBibleList() {
 
-	public ABSBibleList() {
+    }
 
-	}
-
-    public void download() {
-        APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
+    public ABSBibleList download() {
+        String APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
@@ -30,7 +32,6 @@ public class ABSBibleList extends BibleList<ABSBible> {
 
         try {
             OkHttpClient client = new OkHttpClient();
-
             String encodedHeader = Base64.getEncoder().encodeToString((APIKey + ":x").getBytes("UTF-8"));
 
             Request request = new Request.Builder()
@@ -41,10 +42,32 @@ public class ABSBibleList extends BibleList<ABSBible> {
             Response response = client.newCall(request).execute();
             String body = response.body().string();
 
-            Gson gson = new Gson();
+            Type listType = new TypeToken<Map<String, ABSBible>>() {
+            }.getType();
+            Gson gson = new GsonBuilder().registerTypeAdapter(ABSBibleList.class, this).create();
             gson.fromJson(body, ABSBibleList.class);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return this;
+    }
+
+    @Override
+    public ABSBibleList deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonArray biblesJson = json.getAsJsonObject().get("response").getAsJsonObject().get("versions").getAsJsonArray();
+
+        this.bibles = new HashMap<>();
+
+        Gson gson = new GsonBuilder().registerTypeAdapter(ABSBible.class, new ABSBible.ListJsonizer()).create();
+
+        for (int i = 0; i < biblesJson.size(); i++) {
+            ABSBible bible = gson.fromJson(biblesJson.get(i), ABSBible.class);
+            bibles.put(bible.getId(), bible);
+        }
+
+        return this;
     }
 }
