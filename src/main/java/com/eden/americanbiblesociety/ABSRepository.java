@@ -1,8 +1,8 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.EdenRepository;
-import com.caseyjbrooks.eden.bible.Bible;
-import com.caseyjbrooks.eden.bible.Book;
+import com.eden.EdenRepository;
+import com.eden.bible.Bible;
+import com.eden.bible.Book;
 
 public class ABSRepository extends EdenRepository {
     public ABSRepository() {

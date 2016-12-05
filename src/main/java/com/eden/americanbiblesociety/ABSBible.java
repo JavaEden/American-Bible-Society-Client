@@ -1,8 +1,8 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.Eden;
-import com.caseyjbrooks.eden.bible.Bible;
-import com.caseyjbrooks.eden.utils.TextUtils;
+import com.eden.Eden;
+import com.eden.bible.Bible;
+import com.eden.utils.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

@@ -1,7 +1,12 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.bible.Book;
-import com.google.gson.*;
+import com.eden.bible.Book;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

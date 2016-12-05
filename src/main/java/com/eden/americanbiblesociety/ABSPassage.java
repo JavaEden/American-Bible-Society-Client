@@ -1,10 +1,10 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.Eden;
-import com.caseyjbrooks.eden.bible.Passage;
-import com.caseyjbrooks.eden.bible.Reference;
-import com.caseyjbrooks.eden.bible.Verse;
-import com.caseyjbrooks.eden.utils.TextUtils;
+import com.eden.Eden;
+import com.eden.bible.Passage;
+import com.eden.bible.Reference;
+import com.eden.bible.Verse;
+import com.eden.utils.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

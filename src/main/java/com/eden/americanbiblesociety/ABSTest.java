@@ -1,7 +1,7 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.Eden;
-import com.caseyjbrooks.eden.bible.Passage;
+import com.eden.Eden;
+import com.eden.bible.Passage;
 
 public class ABSTest {
 

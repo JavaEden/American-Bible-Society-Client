@@ -1,7 +1,7 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.bible.AbstractVerse;
-import com.caseyjbrooks.eden.interfaces.VerseFormatter;
+import com.eden.bible.AbstractVerse;
+import com.eden.interfaces.VerseFormatter;
 
 public class ABSFormatter implements VerseFormatter {
     protected AbstractVerse verse;

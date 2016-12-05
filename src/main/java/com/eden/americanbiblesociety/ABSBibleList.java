@@ -1,9 +1,15 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.eden.Eden;
-import com.caseyjbrooks.eden.bible.BibleList;
-import com.caseyjbrooks.eden.utils.TextUtils;
-import com.google.gson.*;
+import com.eden.Eden;
+import com.eden.bible.BibleList;
+import com.eden.utils.TextUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
