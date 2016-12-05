@@ -2,7 +2,6 @@ package com.eden.americanbiblesociety;
 
 import com.eden.EdenRepository;
 import com.eden.bible.Bible;
-import com.eden.bible.Book;
 
 public class ABSRepository extends EdenRepository {
     public ABSRepository() {
@@ -30,7 +29,7 @@ public class ABSRepository extends EdenRepository {
     }
 
     @Override
-    public void setSelectedBible(Bible<? extends Book> selectedBible) {
+    public void setSelectedBible(Bible selectedBible) {
         super.setSelectedBible(selectedBible);
     }
 

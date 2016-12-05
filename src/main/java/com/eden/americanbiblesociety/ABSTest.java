@@ -1,7 +1,7 @@
 package com.eden.americanbiblesociety;
 
 import com.eden.Eden;
-import com.eden.bible.Passage;
+import com.eden.bible.BibleList;
 
 public class ABSTest {
 
@@ -15,10 +15,15 @@ public class ABSTest {
 
         // Get our repository as an injected repository, and use it to query for our Bible
         ABSRepository repo = (ABSRepository) eden.getRepository(ABSRepository.class);
-        Passage passage = repo.lookupVerse("Galatians 2:19-21");
 
-        System.out.println(passage.getReference().toString());
-        System.out.println(passage.getText());
-        System.out.println(passage.getFormattedText());
+        BibleList list = repo.getBibleList();
+        System.out.println(Eden.getInstance().getSerializer().create().toJson(list));
+
+
+//        Passage passage = repo.lookupVerse("Galatians 2:19-21");
+
+//        System.out.println(passage.getReference().toString());
+//        System.out.println(passage.getText());
+//        System.out.println(passage.getFormattedText());
     }
 }

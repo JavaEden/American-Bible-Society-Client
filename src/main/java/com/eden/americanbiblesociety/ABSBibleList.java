@@ -25,7 +25,7 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
 
     }
 
-    public ABSBibleList download() {
+    public boolean get() {
         String APIKey = Eden.getInstance().get("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
@@ -53,12 +53,12 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
             Gson gson = new GsonBuilder().registerTypeAdapter(ABSBibleList.class, this).create();
             gson.fromJson(body, ABSBibleList.class);
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            return true;
         }
-
-        return this;
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
