@@ -152,13 +152,14 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
         public ABSBible deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject bibleObj = json.getAsJsonObject();
             ABSBible bible = new ABSBible();
-            bible.setId(              bibleObj.get("id").getAsString());
-            bible.setName(            bibleObj.get("name").getAsString());
-            bible.setAbbreviation(    bibleObj.get("abbreviation").getAsString());
-            bible.setLanguage(        bibleObj.get("lang_name").getAsString());
-            bible.setLanguageEnglish( bibleObj.get("lang_name_eng").getAsString());
-            bible.setCopyright(       bibleObj.get("copyright").getAsString());
-            bible.setNameEnglish(     bibleObj.get("name").getAsString());
+
+            if(bibleObj.has("id"))            bible.setId(              bibleObj.get("id").toString());
+            if(bibleObj.has("name"))          bible.setName(            bibleObj.get("name").toString());
+            if(bibleObj.has("abbreviation"))  bible.setAbbreviation(    bibleObj.get("abbreviation").toString());
+            if(bibleObj.has("lang_name"))     bible.setLanguage(        bibleObj.get("lang_name").toString());
+            if(bibleObj.has("lang_name_eng")) bible.setLanguageEnglish( bibleObj.get("lang_name_eng").toString());
+            if(bibleObj.has("copyright"))     bible.setCopyright(       bibleObj.get("copyright").toString());
+            if(bibleObj.has("name"))          bible.setNameEnglish(     bibleObj.get("name").toString());
 
             return bible;
         }
