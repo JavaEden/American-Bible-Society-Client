@@ -1,7 +1,10 @@
 package com.eden.americanbiblesociety;
 
+import com.caseyjbrooks.clog.Clog;
 import com.eden.Eden;
-import com.eden.bible.BibleList;
+import com.eden.annotations.EdenBible;
+import com.eden.annotations.EdenBibleList;
+import com.eden.bible.Passage;
 
 public class ABSTest {
 
@@ -16,14 +19,29 @@ public class ABSTest {
         // Get our repository as an injected repository, and use it to query for our Bible
         ABSRepository repo = (ABSRepository) eden.getRepository(ABSRepository.class);
 
-        BibleList list = repo.getBibleList();
-        System.out.println(Eden.getInstance().getSerializer().create().toJson(list));
+        Passage passage = repo.lookupVerse("Galatians 2:19-21");
 
+        System.out.println(passage.getReference().toString());
+        System.out.println(passage.getFormattedText());
 
-//        Passage passage = repo.lookupVerse("Galatians 2:19-21");
+        ABSTest test = new ABSTest();
+        test.testInjector();
+    }
 
-//        System.out.println(passage.getReference().toString());
-//        System.out.println(passage.getText());
-//        System.out.println(passage.getFormattedText());
+    @EdenBible(repository = ABSRepository.class)
+    public ABSBible injectedBible;
+
+    @EdenBibleList(repository = ABSRepository.class)
+    public ABSBibleList injectedBibleList;
+
+    public void testInjector() {
+        Clog.i("\n\n");
+        Clog.i("Is injectedBible currently null?: #{$1}", (injectedBible == null));
+        Clog.i("Is injectedBibleList currently null?: #{$1}", (injectedBibleList == null));
+
+        Eden.getInstance().inject(this);
+
+        Clog.i("Is injectedBible currently null?: #{$1}", (injectedBible == null));
+        Clog.i("Is injectedBibleList currently null?: #{$1}", (injectedBibleList == null));
     }
 }
