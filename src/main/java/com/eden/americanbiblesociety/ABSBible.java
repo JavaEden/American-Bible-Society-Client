@@ -3,7 +3,13 @@ package com.eden.americanbiblesociety;
 import com.caseyjbrooks.eden.Eden;
 import com.caseyjbrooks.eden.bible.Bible;
 import com.caseyjbrooks.eden.utils.TextUtils;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -42,14 +48,12 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
         this.languageEnglish = languageEnglish;
     }
 
-    //Downloadable Interface Implementation
-//--------------------------------------------------------------------------------------------------
-    public ABSBible download() {
-        String APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
+    public boolean get() {
+        String APIKey = Eden.getInstance().get("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
-                    "API key not set in Eden metadata. Please add 'ABS_ApiKey' key to metadata."
+                    "API key not set in Eden metadata. Please add 'ABS_ApiKey' key to Eden metadata."
             );
         }
 
@@ -69,11 +73,12 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
 
             Gson gson = Eden.getInstance().getDeserializer().registerTypeAdapter(ABSBible.class, this).create();
             gson.fromJson(body, ABSBible.class);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return true;
         }
-
-        return this;
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -89,7 +94,8 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
 
         if (getId().equalsIgnoreCase(bible.getId())) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }

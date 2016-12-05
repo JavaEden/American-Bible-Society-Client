@@ -20,7 +20,7 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
     }
 
     public ABSBibleList download() {
-        String APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
+        String APIKey = Eden.getInstance().get("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(

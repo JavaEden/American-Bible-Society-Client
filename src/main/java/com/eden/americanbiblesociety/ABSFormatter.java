@@ -1,15 +1,15 @@
 package com.eden.americanbiblesociety;
 
 import com.caseyjbrooks.eden.bible.AbstractVerse;
-import com.caseyjbrooks.eden.interfaces.Formatter;
+import com.caseyjbrooks.eden.interfaces.VerseFormatter;
 
-public class ABSFormatter implements Formatter {
+public class ABSFormatter implements VerseFormatter {
     protected AbstractVerse verse;
 
     @Override
     public String onPreFormat(AbstractVerse verse) {
-        if(!(verse instanceof ABSVerse || verse instanceof ABSPassage)) {
-            throw new IllegalArgumentException("ABSFormatter expects a verse of type ABSVerse or ABSPassage");
+        if(!(verse instanceof ABSPassage)) {
+            throw new IllegalArgumentException("ABSFormatter expects a verse of type ABSPassage");
         }
 
         this.verse = verse;

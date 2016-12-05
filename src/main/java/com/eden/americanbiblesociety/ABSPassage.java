@@ -3,8 +3,14 @@ package com.eden.americanbiblesociety;
 import com.caseyjbrooks.eden.Eden;
 import com.caseyjbrooks.eden.bible.Passage;
 import com.caseyjbrooks.eden.bible.Reference;
+import com.caseyjbrooks.eden.bible.Verse;
 import com.caseyjbrooks.eden.utils.TextUtils;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -13,11 +19,11 @@ import java.lang.reflect.Type;
 import java.util.Base64;
 import java.util.HashMap;
 
-public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<ABSPassage> {
+public class ABSPassage extends Passage implements JsonDeserializer<ABSPassage> {
 
     public ABSPassage(Reference reference) {
         super(reference);
-        this.formatter = new ABSFormatter();
+        this.verseFormatter = new ABSFormatter();
 
         if (reference.getBook() instanceof ABSBook) {
             ABSBook absBook = (ABSBook) reference.getBook();
@@ -27,8 +33,8 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
         }
     }
 
-    public ABSPassage download() {
-        String APIKey = Eden.getInstance().getMetadata().getString("ABS_ApiKey", null);
+    public boolean get() {
+        String APIKey = Eden.getInstance().get("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
@@ -53,11 +59,12 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
 
             Gson gson = Eden.getInstance().getDeserializer().registerTypeAdapter(ABSPassage.class, this).create();
             gson.fromJson(body, ABSPassage.class);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return true;
         }
-
-        return this;
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -75,7 +82,7 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
                 .get("verses").getAsJsonArray();
 
         //add all verses to a map from which we can pick the individual verses we want
-        HashMap<Integer, ABSVerse> verseMap = new HashMap<>();
+        HashMap<Integer, Verse> verseMap = new HashMap<>();
         for(int i = 0; i < versesJSON.size(); i++) {
             Reference verseReference = new Reference.Builder()
                     .setBible(reference.getBible())
@@ -83,7 +90,7 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
                     .setChapter(reference.getChapter())
                     .setVerses(i)
                     .create();
-            ABSVerse verse = new ABSVerse(verseReference);
+            Verse verse = new Verse(verseReference);
 
             String text = versesJSON
                     .get(i).getAsJsonObject()
@@ -96,7 +103,7 @@ public class ABSPassage extends Passage<ABSVerse> implements JsonDeserializer<AB
 
         this.verses.clear();
         for(int i = 0; i < reference.getVerses().size(); i++) {
-            ABSVerse verseFromMap = verseMap.get(reference.getVerses().get(i));
+            Verse verseFromMap = verseMap.get(reference.getVerses().get(i));
             verses.add(verseFromMap);
         }
 
