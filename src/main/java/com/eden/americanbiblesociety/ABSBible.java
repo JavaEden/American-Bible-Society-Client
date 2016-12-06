@@ -49,7 +49,7 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
     }
 
     public boolean get() {
-        String APIKey = Eden.getInstance().get("ABS_ApiKey");
+        String APIKey = Eden.getInstance().config().getString("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
@@ -57,7 +57,7 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
             );
         }
 
-        String url = "http://" + APIKey + ":x@bibles.org/v2/versions/" + id + "/books.js?include_chapters=true";
+        String url = "http://bibles.org/v2/versions/" + id + "/books.js?include_chapters=true";
 
         try {
             OkHttpClient client = new OkHttpClient();

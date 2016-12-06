@@ -34,7 +34,7 @@ public class ABSPassage extends Passage implements JsonDeserializer<ABSPassage> 
     }
 
     public boolean get() {
-        String APIKey = Eden.getInstance().get("ABS_ApiKey");
+        String APIKey = Eden.getInstance().config().getString("ABS_ApiKey");
 
         if (TextUtils.isEmpty(APIKey)) {
             throw new IllegalStateException(
@@ -42,7 +42,7 @@ public class ABSPassage extends Passage implements JsonDeserializer<ABSPassage> 
             );
         }
 
-        String url = "http://" + APIKey + ":x@bibles.org/v2/chapters/" + id + "/verses.js?include_marginalia=false";
+        String url = "http://bibles.org/v2/chapters/" + id + "/verses.js?include_marginalia=false";
 
         try {
             OkHttpClient client = new OkHttpClient();

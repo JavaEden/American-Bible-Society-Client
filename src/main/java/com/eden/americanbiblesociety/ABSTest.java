@@ -12,8 +12,8 @@ public class ABSTest {
 
         // Setup Eden application and register ABSRepository as an injectable EdenRepository
         Eden eden = Eden.getInstance();
-        eden.put("ABS_ApiKey", "mDaM8REZFo6itplNpcv1ls8J5PkwEz1wbhJ7p9po");
-        eden.put("com.eden.americanbiblesociety.ABSRepository_selectedBibleId", "eng-NASB");
+        eden.config().putString("ABS_ApiKey", "mDaM8REZFo6itplNpcv1ls8J5PkwEz1wbhJ7p9po");
+        eden.config().putString("com.eden.americanbiblesociety.ABSRepository_selectedBibleId", "eng-NASB");
         eden.registerRepository(new ABSRepository());
 
         // Get our repository as an injected repository, and use it to query for our Bible
@@ -21,6 +21,7 @@ public class ABSTest {
 
         Passage passage = repo.lookupVerse("Galatians 2:19-21");
 
+        System.out.println(eden.getSerializer().create().toJson(passage));
         System.out.println(passage.getReference().toString());
         System.out.println(passage.getFormattedText());
 
