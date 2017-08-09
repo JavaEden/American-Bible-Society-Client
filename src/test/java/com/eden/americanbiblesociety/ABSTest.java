@@ -1,14 +1,17 @@
 package com.eden.americanbiblesociety;
 
-import com.caseyjbrooks.clog.Clog;
 import com.eden.Eden;
 import com.eden.bible.Passage;
 import com.eden.injection.annotations.EdenBible;
 import com.eden.injection.annotations.EdenBibleList;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 public class ABSTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void testBasicStuff() throws Throwable {
 
         // Setup Eden application and register ABSRepository as an injectable EdenRepository
         Eden eden = Eden.getInstance();
@@ -21,12 +24,11 @@ public class ABSTest {
 
         Passage passage = repo.lookupVerse("Galatians 2:19-21");
 
+        Assert.assertEquals(passage.getReference().toString(), "Galatians 2:19-21");
+
         System.out.println(eden.getSerializer().create().toJson(passage));
         System.out.println(passage.getReference().toString());
         System.out.println(passage.getFormattedText());
-
-        ABSTest test = new ABSTest();
-        test.testInjector();
     }
 
     @EdenBible(repository = ABSRepository.class)
@@ -35,14 +37,14 @@ public class ABSTest {
     @EdenBibleList(repository = ABSRepository.class)
     public ABSBibleList injectedBibleList;
 
-    public void testInjector() {
-        Clog.i("\n\n");
-        Clog.i("Is injectedBible currently null?: #{$1}", (injectedBible == null));
-        Clog.i("Is injectedBibleList currently null?: #{$1}", (injectedBibleList == null));
+    @Test
+    public void testInjector() throws Throwable {
+        Assert.assertNull(injectedBible);
+        Assert.assertNull(injectedBibleList);
 
         Eden.getInstance().inject(this);
 
-        Clog.i("Is injectedBible currently null?: #{$1}", (injectedBible == null));
-        Clog.i("Is injectedBibleList currently null?: #{$1}", (injectedBibleList == null));
+        Assert.assertNotNull(injectedBible);
+        Assert.assertNotNull(injectedBibleList);
     }
 }
