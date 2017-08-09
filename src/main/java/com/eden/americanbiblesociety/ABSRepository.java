@@ -1,9 +1,10 @@
 package com.eden.americanbiblesociety;
 
-import com.eden.EdenRepository;
 import com.eden.bible.Bible;
+import com.eden.repositories.EdenRepository;
 
 public class ABSRepository extends EdenRepository {
+
     public ABSRepository() {
         super();
     }
@@ -21,11 +22,6 @@ public class ABSRepository extends EdenRepository {
     @Override
     public Class<ABSPassage> getPassageClass() {
         return ABSPassage.class;
-    }
-
-    @Override
-    public ABSBible getSelectedBible() {
-        return (ABSBible) super.getSelectedBible();
     }
 
     @Override

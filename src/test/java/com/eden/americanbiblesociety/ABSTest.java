@@ -28,7 +28,7 @@ public class ABSTest {
 
         System.out.println(eden.getSerializer().create().toJson(passage));
         System.out.println(passage.getReference().toString());
-        System.out.println(passage.getFormattedText());
+        System.out.println(passage.getText());
     }
 
     @EdenBible(repository = ABSRepository.class)
