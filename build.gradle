@@ -16,5 +16,5 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.github.JavaEden:Eden:0.3.0'
+    compile 'com.github.JavaEden:Eden:0.4.0'
 }
