@@ -57,7 +57,7 @@ public class ABSBible extends Bible<ABSBook> implements JsonDeserializer<ABSBibl
             );
         }
 
-        String url = "http://bibles.org/v2/versions/" + id + "/books.js?include_chapters=true";
+        String url = "https://bibles.org/v2/versions/" + id + "/books.js?include_chapters=true";
 
         try {
             OkHttpClient client = new OkHttpClient();

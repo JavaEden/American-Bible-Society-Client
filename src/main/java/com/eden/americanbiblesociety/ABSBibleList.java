@@ -34,7 +34,7 @@ public class ABSBibleList extends BibleList<ABSBible> implements JsonDeserialize
             );
         }
 
-        String url = "http://bibles.org/v2/versions.js";
+        String url = "https://bibles.org/v2/versions.js";
 
         try {
             OkHttpClient client = new OkHttpClient();

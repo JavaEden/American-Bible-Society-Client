@@ -42,7 +42,7 @@ public class ABSPassage extends Passage implements JsonDeserializer<ABSPassage> 
             );
         }
 
-        String url = "http://bibles.org/v2/chapters/" + id + "/verses.js?include_marginalia=false";
+        String url = "https://bibles.org/v2/chapters/" + id + "/verses.js?include_marginalia=false";
 
         try {
             OkHttpClient client = new OkHttpClient();
